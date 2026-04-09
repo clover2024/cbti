@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CBTI 基督徒属灵性格测试</title>
+  <meta property="og:title" content="CBTI 基督徒属灵性格测试" />
+  <meta property="og:description" content="你的属灵DNA是什么？发现你在基督里的独特样式。" />
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --panel: #ffffff;
+      --text: #2c2416;
+      --muted: #7a6e5d;
+      --line: #e8e0d4;
+      --soft: #f5f0e8;
+      --accent: #8b6914;
+      --accent-strong: #6b4f10;
+      --shadow: 0 16px 40px rgba(107, 79, 16, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top left, #fffcf5 0, #faf8f5 36%, #f5f0e6 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 56px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px;
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(139, 105, 20, 0.12), rgba(139, 105, 20, 0.02));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--accent-strong);
+      border: 1px solid var(--line);
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      max-width: 680px;
+    }
+    .hero .sub {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 720px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 24px;
+    }
+
+    .mini-panel {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffdf8, #f8f3e8);
+    }
+
+    .mini-panel h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .mini-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .hero-minimal {
+      min-height: 48vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 42px 20px;
+    }
+    .hero-minimal::after { display: none; }
+    .hero-minimal h1 {
+      max-width: none;
+      margin: 0;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .hero-actions-single {
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+      font: inherit;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:disabled { cursor: not-allowed; opacity: 0.55; transform: none; }
+
+    .btn-primary {
+      background: var(--accent-strong);
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(107, 79, 16, 0.18);
+      font-weight: 700;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--accent-strong);
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .test-wrap,
+    .result-wrap {
+      margin-top: 22px;
+      padding: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .progress {
+      flex: 1;
+      min-width: 240px;
+      height: 10px;
+      background: #f0ebe0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #c4a44a, #8b6914);
+      border-radius: inherit;
+      transition: width .22s ease;
+    }
+
+    .progress-text {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .question-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #fffdf8);
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .question-title {
+      font-size: 16px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+
+    .option:hover {
+      border-color: #d4c8a8;
+      background: #fdfaf2;
+    }
+
+    .option input {
+      margin-top: 3px;
+      accent-color: var(--accent-strong);
+      transform: scale(1.1);
+      flex-shrink: 0;
+    }
+
+    .option-code {
+      font-weight: 800;
+      color: var(--accent-strong);
+      min-width: 22px;
+    }
+
+    .actions-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      padding-top: 6px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .result-layout {
+      display: grid;
+      gap: 18px;
+    }
+    .result-top {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .poster-box, .type-box, .analysis-box, .dim-box, .note-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff, #fffdf8);
+    }
+    .poster-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 280px;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at top right, rgba(139,105,20,0.10), rgba(139,105,20,0) 40%),
+        linear-gradient(180deg, #ffffff, #faf6ec);
+      text-align: center;
+    }
+    .poster-emoji {
+      font-size: 80px;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .poster-verse {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-style: italic;
+      max-width: 260px;
+    }
+    .type-kicker {
+      font-size: 12px;
+      color: var(--accent-strong);
+      margin-bottom: 8px;
+      letter-spacing: .06em;
+    }
+    .type-name {
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    .type-subname {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .match {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      color: var(--accent-strong);
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .analysis-box h3, .dim-box h3, .note-box h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .analysis-box p {
+      margin: 0;
+      color: #3d3020;
+      font-size: 15px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+    }
+    .dim-list {
+      display: grid;
+      gap: 12px;
+    }
+    .dim-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+    .dim-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .dim-item-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .dim-item-score {
+      color: var(--accent-strong);
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .dim-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .note-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .result-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 860px) {
+      .result-top { grid-template-columns: 1fr; }
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .shell { padding: 14px 12px 42px; }
+      .hero, .test-wrap, .result-wrap { padding: 16px; }
+      .hero h1 { font-size: 32px; }
+      .question-title { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section id="intro" class="screen active">
+      <div class="hero card hero-minimal">
+        <div class="eyebrow">CBTI</div>
+        <h1>你的属灵DNA是什么？</h1>
+        <div class="sub" style="margin-top:16px;">
+          CBTI — Christian Biblical Type Indicator<br/>
+          通过30道题目，探索你在信仰、爱心、态度、行动与团契五个维度的属灵性格。<br/>
+          每一个结果都对应一位圣经人物，发现你在基督里的独特样式。
+        </div>
+        <div class="hero-actions hero-actions-single">
+          <button id="startBtn" class="btn-primary">开始测试</button>
+        </div>
+        <div style="padding-top: 2rem; display: flex; flex-direction: column; gap: 4px;">
+          <span style="color:var(--muted); font-size:13px;">参考：SBTI 人格测试框架</span>
+          <span style="color:var(--muted); font-size:13px;">"我们原是祂的工作，在基督耶稣里造成的。" — 以弗所书 2:10</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="test" class="screen">
+      <div class="test-wrap card">
+        <div class="topbar">
+          <div class="progress"><span id="progressBar"></span></div>
+          <div class="progress-text" id="progressText">0 / 30</div>
+        </div>
+
+        <div id="questionList" class="question-list"></div>
+
+        <div class="actions-bottom">
+          <div class="hint" id="testHint">请完整回答所有题目，耐心是圣灵的果子。</div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="backIntroBtn" class="btn-secondary">返回首页</button>
+            <button id="submitBtn" class="btn-primary" disabled>提交并查看结果</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result-wrap card">
+        <div class="result-layout">
+          <div class="result-top">
+            <div class="poster-box" id="posterBox">
+              <div class="poster-emoji" id="posterEmoji"></div>
+              <div class="poster-verse" id="posterVerse"></div>
+            </div>
+
+            <div class="type-box">
+              <div class="type-kicker" id="resultModeKicker">你的属灵性格</div>
+              <div class="type-name" id="resultTypeName"></div>
+              <div class="match" id="matchBadge"></div>
+              <div class="type-subname" id="resultTypeSub"></div>
+            </div>
+          </div>
+
+          <div class="analysis-box">
+            <h3>属灵性格解读</h3>
+            <p id="resultDesc"></p>
+          </div>
+
+          <div class="dim-box">
+            <h3>十五维度评分</h3>
+            <div id="dimList" class="dim-list"></div>
+          </div>
+
+          <div class="note-box">
+            <h3>温馨提示</h3>
+            <p id="funNote">本测试仅供属灵生活中的反思与趣味参考，不是属灵成熟度的衡量标准。每个人在基督里都是独特且宝贵的，没有任何测试能定义你在神心中的位置。"耶和华不像人看人，人是看外貌，耶和华是看内心。" — 撒母耳记上 16:7</p>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button id="restartBtn" class="btn-secondary">重新测试</button>
+          <button id="toTopBtn" class="btn-primary">回到首页</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const dimensionMeta = {
+      F1: { name: 'F1 信心根基', model: '信仰模型' },
+      F2: { name: 'F2 属灵敏锐度', model: '信仰模型' },
+      F3: { name: 'F3 信仰确据', model: '信仰模型' },
+      L1: { name: 'L1 爱心广度', model: '爱心模型' },
+      L2: { name: 'L2 恩慈行动', model: '爱心模型' },
+      L3: { name: 'L3 饶恕力量', model: '爱心模型' },
+      At1: { name: 'At1 望的眼光', model: '态度模型' },
+      At2: { name: 'At2 顺服倾向', model: '态度模型' },
+      At3: { name: 'At3 永恒观', model: '态度模型' },
+      Ac1: { name: 'Ac1 服事热忱', model: '行动模型' },
+      Ac2: { name: 'Ac2 决策方式', model: '行动模型' },
+      Ac3: { name: 'Ac3 恒久忍耐', model: '行动模型' },
+      Co1: { name: 'Co1 团契参与', model: '团契模型' },
+      Co2: { name: 'Co2 属灵伙伴', model: '团契模型' },
+      Co3: { name: 'Co3 真实敞开', model: '团契模型' }
+    };
+
+    const questions = [
+      {
+        id: 'q1', dim: 'F1',
+        text: '面对人生的重大决定时，你更依赖什么？',
+        options: [
+          { label: '自己的分析和判断', value: 1 },
+          { label: '一方面祷告，一方面权衡', value: 2 },
+          { label: '祷告寻求神的旨意，相信祂的引导', value: 3 }
+        ]
+      },
+      {
+        id: 'q2', dim: 'F1',
+        text: '当事情的发展与你的祷告不符时，你的第一反应是？',
+        options: [
+          { label: '开始怀疑祷告是否有用', value: 1 },
+          { label: '感到困惑，但仍继续祷告', value: 2 },
+          { label: '相信神有更好的安排，虽然暂时不明白', value: 3 }
+        ]
+      },
+      {
+        id: 'q3', dim: 'F2',
+        text: '你对圣灵的引导和感动有多敏感？',
+        options: [
+          { label: '说实话，没什么特别的感受', value: 1 },
+          { label: '偶尔会有一些特别的感动', value: 2 },
+          { label: '经常能感受到内心的微小声音和感动', value: 3 }
+        ]
+      },
+      {
+        id: 'q4', dim: 'F2',
+        text: '读圣经时，你通常的体验是？',
+        options: [
+          { label: '更像是在完成一个习惯或任务', value: 1 },
+          { label: '有时会被一句话触动', value: 2 },
+          { label: '经常觉得某段话就是神今天对我说的话', value: 3 }
+        ]
+      },
+      {
+        id: 'q5', dim: 'F3',
+        text: '"我是神所爱的孩子"——你有多确信这一点？',
+        options: [
+          { label: '有时候会怀疑，觉得自己不够好', value: 1 },
+          { label: '理智上知道，但感受上时强时弱', value: 2 },
+          { label: '这是我身份的核心，深深确信', value: 3 }
+        ]
+      },
+      {
+        id: 'q6', dim: 'F3',
+        text: '当你在信仰上软弱或跌倒时，你会？',
+        options: [
+          { label: '觉得自己大概不够格做基督徒', value: 1 },
+          { label: '先难过一阵子，然后慢慢恢复', value: 2 },
+          { label: '虽然难过，但知道恩典够用，会重新站起来', value: 3 }
+        ]
+      },
+      {
+        id: 'q7', dim: 'L1',
+        text: '你在教会或小组中，更倾向于关注谁的需要？',
+        options: [
+          { label: '主要关注自己和家人的需要', value: 1 },
+          { label: '会留意身边比较熟悉的人', value: 2 },
+          { label: '常常注意到那些被忽略或 newcomer 的需要', value: 3 }
+        ]
+      },
+      {
+        id: 'q8', dim: 'L1',
+        text: '有人得罪了你，你心里的感受更接近哪个？',
+        options: [
+          { label: '生气，觉得凭什么这样对我', value: 1 },
+          { label: '虽然不高兴，但尽量不表现出来', value: 2 },
+          { label: '虽然难过，但会为他祷告，求神帮助双方', value: 3 }
+        ]
+      },
+      {
+        id: 'q9', dim: 'L2',
+        text: '当你知道弟兄姊妹有困难时，你通常会？',
+        options: [
+          { label: '在心里为他祷告，但不太会主动做什么', value: 1 },
+          { label: '会在合适的时候表达关心', value: 2 },
+          { label: '会主动伸出援手，甚至默默帮忙', value: 3 }
+        ]
+      },
+      {
+        id: 'q10', dim: 'L2',
+        text: '你在奉献和帮助他人的事情上，态度是？',
+        options: [
+          { label: '量力而行，先照顾好自己的需要', value: 1 },
+          { label: '偶尔会被特别的需要打动而奉献', value: 2 },
+          { label: '甘心乐意，认为给予本身就是祝福', value: 3 }
+        ]
+      },
+      {
+        id: 'q11', dim: 'L3',
+        text: '有人曾经深深地伤害过你，现在的你？',
+        options: [
+          { label: '说实话，还是没法完全释怀', value: 1 },
+          { label: '表面上看过去了，心里偶尔还会想起', value: 2 },
+          { label: '靠着神的恩典，已经可以真心为对方祝福', value: 3 }
+        ]
+      },
+      {
+        id: 'q12', dim: 'L3',
+        text: '你认为饶恕一个人意味着什么？',
+        options: [
+          { label: '不再去想那件事，让时间冲淡一切', value: 1 },
+          { label: '选择不追究，但信任需要时间恢复', value: 2 },
+          { label: '在神面前释放对方，也释放自己', value: 3 }
+        ]
+      },
+      {
+        id: 'q13', dim: 'At1',
+        text: '面对当前的困难和挑战，你更倾向于？',
+        options: [
+          { label: '容易焦虑，觉得事情可能不会好转', value: 1 },
+          { label: '走一步看一步，希望能有转机', value: 2 },
+          { label: '相信万事互相效力，在困难中也有神的美意', value: 3 }
+        ]
+      },
+      {
+        id: 'q14', dim: 'At1',
+        text: '你对未来持有的态度更像哪个？',
+        options: [
+          { label: '未来充满不确定，走一天算一天', value: 1 },
+          { label: '谨慎乐观，尽人力听天命', value: 2 },
+          { label: '充满盼望，因为知道谁掌管明天', value: 3 }
+        ]
+      },
+      {
+        id: 'q15', dim: 'At2',
+        text: '当圣经的教导和你的个人意愿有冲突时？',
+        options: [
+          { label: '会先按自己的想法来，之后再慢慢调整', value: 1 },
+          { label: '内心挣扎一番，努力找到一个平衡', value: 2 },
+          { label: '愿意顺服神的话语，即使对自己有挑战', value: 3 }
+        ]
+      },
+      {
+        id: 'q16', dim: 'At2',
+        text: '在教会中，面对权柄和安排，你的态度是？',
+        options: [
+          { label: '会先评估是否合理，不认同的会保留意见', value: 1 },
+          { label: '基本配合，但心里有自己的想法', value: 2 },
+          { label: '愿意存谦卑的心顺服，相信神设立权柄', value: 3 }
+        ]
+      },
+      {
+        id: 'q17', dim: 'At3',
+        text: '你如何看待今生的生活？',
+        options: [
+          { label: '尽量让现在过得好，以后的事以后再说', value: 1 },
+          { label: '知道有永恒，但现实生活也很重要', value: 2 },
+          { label: '今生是寄居的，真正永恒的家在天上', value: 3 }
+        ]
+      },
+      {
+        id: 'q18', dim: 'At3',
+        text: '当你思考人生意义时，你更接近？',
+        options: [
+          { label: '把眼前的事做好就不错了', value: 1 },
+          { label: '有时会想更深层的问题，但没有明确答案', value: 2 },
+          { label: '确信人生的目的是荣耀神并享受与祂的同在', value: 3 }
+        ]
+      },
+      {
+        id: 'q19', dim: 'Ac1',
+        text: '你在教会的服事中，更像哪种状态？',
+        options: [
+          { label: '需要被邀请或推动才会参与', value: 1 },
+          { label: '在自己方便的时候会参与', value: 2 },
+          { label: '主动寻找服事的机会，觉得服事就是敬拜', value: 3 }
+        ]
+      },
+      {
+        id: 'q20', dim: 'Ac1',
+        text: '当你感受到神的呼召或感动去做一件事时？',
+        options: [
+          { label: '会反复确认，总觉得也许不是来自神', value: 1 },
+          { label: '会小步尝试，边走边看', value: 2 },
+          { label: '愿意凭信心踏出去，神会负责到底', value: 3 }
+        ]
+      },
+      {
+        id: 'q21', dim: 'Ac2',
+        text: '你在做重大决定时的方式更像？',
+        options: [
+          { label: '会反复思考，经常犹豫不决', value: 1 },
+          { label: '会征求他人的意见，综合评估后决定', value: 2 },
+          { label: '在祷告中寻求平安，一旦确认就果断行动', value: 3 }
+        ]
+      },
+      {
+        id: 'q22', dim: 'Ac2',
+        text: '面对需要改变的事情，你通常？',
+        options: [
+          { label: '倾向于维持现状，改变让人不安', value: 1 },
+          { label: '如果理由充分，可以接受改变', value: 2 },
+          { label: '相信神在做新事，愿意拥抱变化', value: 3 }
+        ]
+      },
+      {
+        id: 'q23', dim: 'Ac3',
+        text: '你在属灵操练（祷告、读经、禁食等）上的坚持程度？',
+        options: [
+          { label: '经常三天打鱼两天晒网', value: 1 },
+          { label: '有基本的规律，但偶尔会中断', value: 2 },
+          { label: '坚持得比较好，已经成为生活的一部分', value: 3 }
+        ]
+      },
+      {
+        id: 'q24', dim: 'Ac3',
+        text: '你在服事或事工遇到困难和挫折时会？',
+        options: [
+          { label: '容易灰心，想放弃', value: 1 },
+          { label: '会休息一下，调整后再继续', value: 2 },
+          { label: '在神面前重新得力，坚持到底', value: 3 }
+        ]
+      },
+      {
+        id: 'q25', dim: 'Co1',
+        text: '你在教会或团契中的参与程度如何？',
+        options: [
+          { label: '比较被动，有人邀请才参加聚会', value: 1 },
+          { label: '会参加主要聚会，但不一定主动', value: 2 },
+          { label: '积极参与，并且会主动关心新来的弟兄姊妹', value: 3 }
+        ]
+      },
+      {
+        id: 'q26', dim: 'Co1',
+        text: '聚会结束后，你更可能？',
+        options: [
+          { label: '安静离开，不太习惯主动跟人交流', value: 1 },
+          { label: '跟熟悉的朋友聊几句', value: 2 },
+          { label: '主动找人交通，特别是看到有需要的人', value: 3 }
+        ]
+      },
+      {
+        id: 'q27', dim: 'Co2',
+        text: '你在属灵生活中对属灵伙伴的态度是？',
+        options: [
+          { label: '更习惯一个人安静地走信仰的路', value: 1 },
+          { label: '有几个比较亲近的弟兄姊妹，但不深交', value: 2 },
+          { label: '很珍惜属灵伙伴关系，愿意彼此守望和代祷', value: 3 }
+        ]
+      },
+      {
+        id: 'q28', dim: 'Co2',
+        text: '你愿意让其他弟兄姊妹看到自己的软弱吗？',
+        options: [
+          { label: '不太愿意，希望在人前保持好见证', value: 1 },
+          { label: '对非常信任的人可以稍微敞开', value: 2 },
+          { label: '愿意在安全的属灵关系中真诚分享', value: 3 }
+        ]
+      },
+      {
+        id: 'q29', dim: 'Co3',
+        text: '在小组分享时，你通常？',
+        options: [
+          { label: '只说一些比较表面和稳妥的话', value: 1 },
+          { label: '会在有把握的时候分享一些真实感受', value: 2 },
+          { label: '愿意真实地分享自己的挣扎和神的恩典', value: 3 }
+        ]
+      },
+      {
+        id: 'q30', dim: 'Co3',
+        text: '在弟兄姊妹面前，你觉得哪个更接近真实的你？',
+        options: [
+          { label: '我在教会和在家的表现差别比较大', value: 1 },
+          { label: '大部分时候是一致的，偶尔会有不同', value: 2 },
+          { label: '努力在各个场合都保持真实一致', value: 3 }
+        ]
+      }
+    ];
+
+    const TYPE_LIBRARY = {
+      "彼得": {
+        "code": "彼得",
+        "cn": "热血使徒",
+        "emoji": "🔥",
+        "verse": "\"主啊，我就是同你下监，同你受死，也是甘心。\" — 路加福音 22:33",
+        "desc": "你和彼得一样，拥有一颗赤诚火热的心。你的信仰充满了行动力和热情，一旦被感动就愿意立刻踏出去。你可能在冲动的时刻说过很多豪言壮语，也在软弱中经历过主温柔的恢复。你的属灵特质是：不怕失败，跌倒了就爬起来。你往往是最先回应呼召的人，也是弟兄姊妹中那个\"说干就干\"的行动派。神使用你的热忱和勇气，就像祂使用彼得——从渔夫到磐石，你的故事还在继续书写。"
+      },
+      "保罗": {
+        "code": "保罗",
+        "cn": "真理战士",
+        "emoji": "⚔️",
+        "verse": "\"那美好的仗我已经打过了，当跑的路我已经跑尽了，所信的道我已经守住了。\" — 提摩太后书 4:7",
+        "desc": "你和保罗一样，是一位为真理而活的人。你对信仰有深刻的理解和坚定的立场，愿意为福音的纯正付上代价。你有清晰的异象和目标，一旦认定方向就不轻言放弃。你的属灵特质是：在真理上不妥协，在服事上全力以赴。你可能在人际中显得有些强硬，但你的热心和忠贞是真实的。神使用你建立教会、守护真理，就像祂使用保罗——从逼迫者到使徒，你的转变本身就是最好的见证。"
+      },
+      "约翰": {
+        "code": "约翰",
+        "cn": "爱的使徒",
+        "emoji": "❤️",
+        "verse": "\"我们爱，因为神先爱我们。\" — 约翰一书 4:19",
+        "desc": "你和约翰一样，拥有一颗深邃而温暖的心。你的信仰根植于对神之爱的深刻体验，你深知被爱的滋味，也甘心将这份爱传递出去。你有着敏锐的属灵感官，能在安静中感受到神的同在。你的属灵特质是：以爱为出发点来理解一切。你往往是最能体贴他人软弱的人，弟兄姊妹在你身边会感到被接纳和被珍惜。神使用你的温柔和爱来医治人心，就像祂使用约翰——在十字架下领受托付，在爱中书写永恒。"
+      },
+      "摩西": {
+        "code": "摩西",
+        "cn": "谦卑领袖",
+        "emoji": "🏔️",
+        "verse": "\"摩西为人极其谦和，胜过世上的众人。\" — 民数记 12:3",
+        "desc": "你和摩西一样，是一位被神慢慢塑造的领袖。你可能不觉得自己有什么特别，甚至在被呼召时曾推脱过。但神看中的正是你的谦卑和忠心。你有与神亲密同行的渴望，也有带领人走过旷野的耐力。你的属灵特质是：在静默中领受异象，在困难中坚持不放弃。你的成长历程可能充满曲折，但每一步都有神的引导。神使用你的耐心和信心，领人从捆绑走向自由——也许你还没意识到，你正在做同样的事。"
+      },
+      "大卫": {
+        "code": "大卫",
+        "cn": "敬拜勇士",
+        "emoji": "🎵",
+        "verse": "\"耶和华是我的牧者，我必不至缺乏。\" — 诗篇 23:1",
+        "desc": "你和大卫一样，是一位在敬拜中经历神的人。你有着丰富的情感和坦率的灵，在顺境中高声赞美，在逆境中诚实呼求。你不是一个完美的人，但你是一个真实的人——在神面前从不伪装。你的属灵特质是：用心灵和诚实敬拜，在软弱中回转，在悔改中得恢复。你可能在人生中经历过不少起伏，但每一次你都更深地经历了神的恩典。神使用你的真实和勇敢，就像祂使用大卫——一个合神心意的人，不是因为他完美，而是因为他全心转向神。"
+      },
+      "但以理": {
+        "code": "但以理",
+        "cn": "坚贞先知",
+        "emoji": "🦁",
+        "verse": "\"即或不然，王啊，你当知道我们决不侍奉你的神。\" — 但以理书 3:18",
+        "desc": "你和但以理一样，是一位在逆境中依然坚守信仰的人。你有着超越年龄的沉稳和智慧，能在压力和试探中保持对神的忠诚。你重视属灵的规律和操练，这些日常的坚持在关键时刻成为你站立的力量。你的属灵特质是：在世俗环境中活出分别为圣的生命。你可能在某些环境中显得格格不入，但你宁愿忠于神也不随波逐流。神使用你在艰难的地方为祂作见证，就像祂使用但以理——在异邦中发光，在狮子坑中经历拯救。"
+      },
+      "以斯帖": {
+        "code": "以斯帖",
+        "cn": "勇敢王后",
+        "emoji": "👑",
+        "verse": "\"我若死就死吧。\" — 以斯帖记 4:16",
+        "desc": "你和以斯帖一样，有着看似温柔却内心坚定的力量。你未必是最引人注目的那一位，但你知道自己在关键时刻有不可推卸的使命。你愿意在需要的时候勇敢站出来，即使代价可能是失去一切。你的属灵特质是：在安静中预备自己，在神的时候勇敢行动。你可能平时低调谦和，但神把你放在现在的位置绝非偶然——\"焉知你得了王后的位分，不是为现今的机会吗？\"你的勇气和信心，正在改变你周围的世界。"
+      },
+      "路得": {
+        "code": "路得",
+        "cn": "忠诚同行者",
+        "emoji": "🌾",
+        "verse": "\"你往哪里去，我也往那里去；你在哪里住宿，我也在那里住宿。\" — 路得记 1:16",
+        "desc": "你和路得一样，是一位以忠诚和恩慈打动人心的人。你可能不是最耀眼的，但你是最值得信赖的。你愿意在他人看不到希望的时候依然同行，在别人选择离开的时候选择留下。你的属灵特质是：以朴实的信心和坚定的陪伴来表达爱。你不张扬，不邀功，只是默默地在每一天忠心生活。神看重你这样的忠贞，就像祂看重路得——一个外邦女子，因着信被纳入了神救赎的计划，成为大卫和弥赛亚的先祖。"
+      },
+      "约书亚": {
+        "code": "约书亚",
+        "cn": "信心的先锋",
+        "emoji": " march",
+        "verse": "\"至于我和我家，我们必定侍奉耶和华。\" — 约书亚记 24:15",
+        "desc": "你和约书亚一样，是一位在信心中勇敢前行的人。你愿意踏入未知之地，相信神已经将那地赐给你。你有领袖的气质，但你的领袖力来自对神的信靠而非自我的能力。你的属灵特质是：在他人犹豫时率先踏出信心的一步，用行动激励众人跟随。你不怕面对耶利哥的高墙，因为你知道争战的胜败全在于耶和华。神使用你的勇敢和信心，带领人进入祂的应许——也许此刻，神正在呼召你踏入你的\"迦南地\"。"
+      },
+      "所罗门": {
+        "code": "所罗门",
+        "cn": "智慧寻求者",
+        "emoji": "📖",
+        "verse": "\"敬畏耶和华是智慧的开端，认识至圣者便是聪明。\" — 箴言 9:10",
+        "desc": "你和所罗门一样，是一位渴慕智慧和理解的人。你喜欢深入思考信仰的问题，不满足于表面的答案。你在做决定时会审慎考量，寻求从上头来的智慧。你的属灵特质是：以敬畏神为根基，追求对真理和人生的深层理解。你可能在理性与感性之间寻求平衡，而你的思考深度常常成为他人的帮助。神使用你的智慧来建造和教导，就像祂使用所罗门——虽然人无完人，但一颗敬畏神的心就是一切智慧的源泉。"
+      },
+      "尼希米": {
+        "code": "尼希米",
+        "cn": "重建者",
+        "emoji": "🧱",
+        "verse": "\"来吧，我们重建耶路撒冷的城墙，免得再受辱骂。\" — 尼希米记 2:17",
+        "desc": "你和尼希米一样，是一位在破碎中看到重建希望的人。当别人只看到废墟的时候，你看到的是神可以恢复的荣美。你有规划的能力和推行的决心，也有在反对声中坚持的勇气。你的属灵特质是：在祷告中寻求策略，在行动中倚靠神。你不仅看见需要，更愿意动手去做。你可能正在某个\"废墟\"面前——一段关系、一个事工、或者自己内心的某个角落——神呼召你像尼希米一样，一手做工，一手拿兵器，在信心中重建。"
+      },
+      "撒母耳": {
+        "code": "撒母耳",
+        "cn": "聆听者",
+        "emoji": "👂",
+        "verse": "\"请说，仆人敬听。\" — 撒母耳记上 3:10",
+        "desc": "你和撒母耳一样，是一位在安静中学习聆听神声音的人。你可能很早就有被神使用的心愿，但真正学会辨认神的声音需要时间和操练。你的属灵特质是：保持一颗柔软聆听的心，愿意在神说话时立刻回应\"请说，仆人敬听\"。你在代祷上有特别的负担，常常在别人未曾注意到的地方忠心地守望。神使用你的聆听和忠心，成为这个时代的桥梁——连接上一代的传承和下一代的需要。"
+      },
+      "以利亚": {
+        "code": "以利亚",
+        "cn": "烈火先知",
+        "emoji": "🔥",
+        "verse": "\"耶和华啊，求你应允我，应允我！\" — 列王纪上 18:37",
+        "desc": "你和以利亚一样，是一位在属灵争战中勇敢站立的人。你有着为真理争战的火热心志，在众人妥协的时候仍然坚持敬拜独一的真神。你不怕站在对立面，因为你知道与你同在的比与对方同在的更多。你的属灵特质是：在信心中敢于挑战不可能，在祷告中经历神的大能。但你也像以利亚一样，在属灵高峰之后可能经历低谷——这不是软弱，这提醒你，神不在烈风地震中，而在微小的声音里。祂的恩典够你用。"
+      },
+      "亚伯拉罕": {
+        "code": "亚伯拉罕",
+        "cn": "信心的旅程",
+        "emoji": "⛺",
+        "verse": "\"亚伯兰信耶和华，耶和华就以此为他的义。\" — 创世记 15:6",
+        "desc": "你和亚伯拉罕一样，是一位在信心中踏上未知旅程的人。你的信仰不是一个终点，而是一段持续出发的旅途。你被呼召离开舒适圈，前往神指示的地方——虽然你一开始可能并不清楚那地在哪里。你的属灵特质是：相信神的应许，即使现实看似不可能。你的人生可能有漫长的等待期，但神在等待中磨塑你的信心。神使用你成为\"多国之父\"的祝福——也许你还没看见，但你信心的脚步正在影响比你想象的更多的人。"
+      },
+      "约瑟": {
+        "code": "约瑟",
+        "cn": "等候中的忠心",
+        "emoji": "🌿",
+        "verse": "\"从前你们的意思是要害我，但神的意思原是好的。\" — 创世记 50:20",
+        "desc": "你和约瑟一样，是一位在等候中保持忠心的人。你的人生可能经历了不少不公平的对待——被误解、被遗忘、被亏待。但你在每一个低谷中都没有放弃对神的信靠。你的属灵特质是：在任何处境中都活出忠心，相信神有祂的时候和美意。你可能正在某个\"监狱\"中等候释放，但请记得：约瑟的监狱不是终点，而是通往宝座的预备。神正在使用你经历的一切苦难，装备你成为他人的拯救和祝福。"
+      },
+      "撒拉": {
+        "code": "撒拉",
+        "cn": "应许的等候者",
+        "emoji": "✨",
+        "verse": "\"撒拉虽然过了生育的岁数，还能怀孕，因她以为那应许她的是可信的。\" — 希伯来书 11:11",
+        "desc": "你和撒拉一样，是一位在漫长的等待中学习信靠神应许的人。你可能正在为一个应许等候了很久——也许长到几乎不抱希望了。你曾经笑过（也许带着苦涩），但神对你说：在祂没有难成的事。你的属灵特质是：即使人的理性说不可能，神的应许仍然要成就。你的人生也许有些晚开的花，但正是这些等候磨塑了你深深的信靠。神看重你在等待中的坚持，祂的应许绝不落空——也许喜笑就在不远处。"
+      },
+      "马利亚": {
+        "code": "马利亚",
+        "cn": "安静敬拜者",
+        "emoji": "🕊️",
+        "verse": "\"马利亚已经选择了那上好的福分，是不能夺去的。\" — 路加福音 10:42",
+        "desc": "你和伯大尼的马利亚一样，是一位在安静中深深敬拜的人。你珍惜与主亲近的时刻，胜过一切外在的事工和忙碌。你有着敏感的心灵，能捕捉到别人忽略的属灵细节。你的属灵特质是：在嘈杂中安静，在安静中领受。你可能被一些人误解为\"不够积极\"，但主知道你的心——你选择了那上好的福分。你用最好的来膏抹主，你的敬拜是真实的，你的爱是深沉的。在忙碌的服事中，别忘了你的第一呼召是坐在主的脚前。"
+      },
+      "马大": {
+        "code": "马大",
+        "cn": "热心服事者",
+        "emoji": "🍽️",
+        "verse": "\"马大伺候的事多，心里忙乱。\" — 路加福音 10:40",
+        "desc": "你和马大一样，是一位在服事中全力以赴的人。你总是那个在幕后忙碌的人——预备食物、安排场地、照顾每个人的需要。你用心地服事，希望把最好的献给主和弟兄姊妹。你的属灵特质是：以实际行动来表达爱，在细节中忠心。你的热心是宝贵的，但主也温柔地提醒你：在忙碌中别忘了先安坐在祂的脚前。服事的动力不是责任，而是先被爱充满，然后自然地流淌出来。你已经做了很多，现在也让主来服事你吧。"
+      },
+      "提摩太": {
+        "code": "提摩太",
+        "cn": "年轻忠仆",
+        "emoji": "🌱",
+        "verse": "\"不可叫人小看你年轻，总要在言语、行为、爱心、信心、清洁上，都作信徒的榜样。\" — 提摩太前书 4:12",
+        "desc": "你和提摩太一样，是一位在属灵传承中成长的人。你可能有一颗谦卑受教的心，愿意从成熟的弟兄姊妹身上学习。你也许有时会胆怯，觉得自己不够老练、不够有经验。但保罗对提摩太说的话也是对你说的：神给你的恩赐，要挑旺起来。你的属灵特质是：在谦卑中领受，在忠心中成长。你的纯真和敬畏是你的力量，不要让胆怯夺走你的勇气。神正在使用你，而你能影响的那一代人，也许比你想象的更多。"
+      },
+      "巴拿巴": {
+        "code": "巴拿巴",
+        "cn": "鼓励者",
+        "emoji": "🤝",
+        "verse": "\"巴拿巴是个好人，被圣灵充满，大有信心。\" — 使徒行传 11:24",
+        "desc": "你和巴拿巴一样，是一位用鼓励建立他人的人。你有着宽广的心胸，愿意接纳别人不愿接纳的人。你看到了扫罗的潜力（当众人还在怀疑的时候），也看到了马可的成长（当保罗放弃的时候）。你的属灵特质是：看见他人身上的可能，用鼓励和支持来成全他们。你也许不像台前的领袖那样引人注目，但你扶持的人却成为了改变历史的人。你是一个真正的\"劝慰之子\"——在教会中，你就是那个让人重新燃起希望的人。"
+      }
+    };
+
+    const NORMAL_TYPES = [
+      { "code": "彼得", "pattern": "HHH-MMH-MMH-HHH-MHM" },
+      { "code": "保罗", "pattern": "HMH-HMH-MHH-HHH-MLH" },
+      { "code": "约翰", "pattern": "MHM-HHH-HHM-MMH-MHH" },
+      { "code": "摩西", "pattern": "HHL-MMM-MHH-MMH-MLM" },
+      { "code": "大卫", "pattern": "HMH-HMH-MHM-MHM-MHM" },
+      { "code": "但以理", "pattern": "HHM-MML-HHH-MHH-LLM" },
+      { "code": "以斯帖", "pattern": "MMH-MMH-MMH-MHH-MML" },
+      { "code": "路得", "pattern": "MMH-HHM-MMH-MMH-MHM" },
+      { "code": "约书亚", "pattern": "HHM-MHM-HMH-HHH-MML" },
+      { "code": "所罗门", "pattern": "MHM-MML-MHM-MML-MML" },
+      { "code": "尼希米", "pattern": "HHL-MHM-HMH-HHH-MLH" },
+      { "code": "撒母耳", "pattern": "HHM-MMM-HMH-MMH-MHM" },
+      { "code": "以利亚", "pattern": "HHH-MML-MHM-HHH-LLM" },
+      { "code": "亚伯拉罕", "pattern": "HHH-MLM-HMH-MMH-MLH" },
+      { "code": "约瑟", "pattern": "HHL-MHM-MHH-MHM-MLM" },
+      { "code": "撒拉", "pattern": "MLM-MLH-MHM-MHM-MML" },
+      { "code": "马利亚", "pattern": "MHH-MHH-MMH-MLL-MHH" },
+      { "code": "马大", "pattern": "MMH-MMH-MMH-HHH-HMM" },
+      { "code": "提摩太", "pattern": "MLM-MML-MHH-MMH-MML" },
+      { "code": "巴拿巴", "pattern": "MMH-HHM-MMH-MMH-HHH" }
+    ];
+
+    const DIM_EXPLANATIONS = {
+      "F1": {
+        "L": "信心更多建立在理性和经验上，遇到挑战时容易动摇。",
+        "M": "有基本的信心，但在重大考验时需要额外的确据和鼓励。",
+        "H": "对神的信靠比较稳定，即使环境不利也选择相信。"
+      },
+      "F2": {
+        "L": "属灵感官需要更多操练，较少感受到圣灵的微细引导。",
+        "M": "有一定的属灵敏感度，偶尔能感受到神的同在和引导。",
+        "H": "对圣灵的感动较为敏锐，能在日常中辨认神的声音。"
+      },
+      "F3": {
+        "L": "在神面前的身份感有时模糊，容易因行为好坏而波动。",
+        "M": "知道自己是神的孩子，但确据时强时弱。",
+        "H": "深深确信自己在基督里的身份，这是你的根基。"
+      },
+      "L1": {
+        "L": "爱心更多聚焦在亲近的人身上，对陌生人的关注度有限。",
+        "M": "有关怀他人的心，但会被距离和亲疏关系影响。",
+        "H": "爱的范围比较广，容易被那些被忽略的人触动。"
+      },
+      "L2": {
+        "L": "恩慈更多停留在内心感动层面，较少转化为具体行动。",
+        "M": "会在方便的时候伸出援手，但不太会主动寻找机会。",
+        "H": "经常以实际行动表达关怀，给予对你来说是一种喜乐。"
+      },
+      "L3": {
+        "L": "饶恕是一段艰难的旅程，某些伤痛需要更多时间在神面前处理。",
+        "M": "愿意饶恕，但过程往往需要时间，信任的恢复也不是一蹴而就。",
+        "H": "经历了神极大的恩典，因此在饶恕上也有较大的力量。"
+      },
+      "At1": {
+        "L": "容易看到事情的消极面，需要更多地操练望的眼光。",
+        "M": "在顺境中满有盼望，在逆境中则需要刻意仰望。",
+        "H": "无论顺境逆境，都相信神在掌权，对祂的应许有稳固的盼望。"
+      },
+      "At2": {
+        "L": "顺服需要在更多的认识和理解之后，理性参与度较高。",
+        "M": "愿意顺服，但内心有时会有挣扎和疑问。",
+        "H": "顺服是信仰的自然流露，相信神的意念高过自己的意念。"
+      },
+      "At3": {
+        "L": "更关注今生的需要和体验，永恒的观念还需要培养。",
+        "M": "知道有永恒，但今生的事情占据了大部分注意力。",
+        "H": "以永恒的眼光看待今生，你的选择和优先次序由此驱动。"
+      },
+      "Ac1": {
+        "L": "服事更多是被动的回应，需要外在的推动力。",
+        "M": "有服事的心，但热忱有起伏，取决于状态和环境。",
+        "H": "服事是生命的自然流露，你从中经历到喜乐和满足。"
+      },
+      "Ac2": {
+        "L": "做决定时比较谨慎，需要较多的信息和确认。",
+        "M": "会在祷告和理性之间寻求平衡，不轻举妄动也不拖延。",
+        "H": "在祷告中得着平安后能果断行动，信心的步伐比较坚定。"
+      },
+      "Ac3": {
+        "L": "在属灵操练上坚持不易，需要更多的同伴和 Accountability。",
+        "M": "有基本的属灵习惯，但偶尔会被打断或松懈。",
+        "H": "属灵操练已经成为生活的一部分，恒久性较好。"
+      },
+      "Co1": {
+        "L": "在团契中比较被动，需要被邀请和鼓励才会参与。",
+        "M": "会参加主要的聚会和活动，但不一定是主动发起的那位。",
+        "H": "积极参与团契生活，愿意主动投入和贡献。"
+      },
+      "Co2": {
+        "L": "更习惯独自走信仰的路，对深度的属灵分享有保留。",
+        "M": "有可以分享的伙伴，但敞开程度取决于关系的深度。",
+        "H": "珍视属灵伙伴关系，愿意彼此守望和真实相交。"
+      },
+      "Co3": {
+        "L": "在弟兄姊妹面前比较谨慎，分享时会选择性表达。",
+        "M": "在信任的环境中可以敞开，但在大群体中会比较收敛。",
+        "H": "追求在各个场合的真实一致，愿意在安全关系中分享软弱。"
+      }
+    };
+
+    const dimensionOrder = ['F1','F2','F3','L1','L2','L3','At1','At2','At3','Ac1','Ac2','Ac3','Co1','Co2','Co3'];
+
+    const app = {
+      shuffledQuestions: [],
+      answers: {}
+    };
+
+    const screens = {
+      intro: document.getElementById('intro'),
+      test: document.getElementById('test'),
+      result: document.getElementById('result')
+    };
+
+    const questionList = document.getElementById('questionList');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const submitBtn = document.getElementById('submitBtn');
+    const testHint = document.getElementById('testHint');
+
+    function showScreen(name) {
+      Object.entries(screens).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function renderQuestions() {
+      questionList.innerHTML = '';
+      app.shuffledQuestions.forEach((q, index) => {
+        const card = document.createElement('article');
+        card.className = 'question';
+        card.innerHTML = `
+          <div class="question-meta">
+            <div class="badge">第 ${index + 1} 题</div>
+            <div>${dimensionMeta[q.dim].model}</div>
+          </div>
+          <div class="question-title">${q.text}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => {
+              const code = ['A', 'B', 'C'][i];
+              const checked = app.answers[q.id] === opt.value ? 'checked' : '';
+              return `
+                <label class="option">
+                  <input type="radio" name="${q.id}" value="${opt.value}" ${checked} />
+                  <div class="option-code">${code}</div>
+                  <div>${opt.label}</div>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        `;
+        questionList.appendChild(card);
+      });
+
+      questionList.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', (e) => {
+          app.answers[e.target.name] = Number(e.target.value);
+          updateProgress();
+        });
+      });
+
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = app.shuffledQuestions.length;
+      const done = app.shuffledQuestions.filter(q => app.answers[q.id] !== undefined).length;
+      const percent = total ? (done / total) * 100 : 0;
+      progressBar.style.width = `${percent}%`;
+      progressText.textContent = `${done} / ${total}`;
+      const complete = done === total && total > 0;
+      submitBtn.disabled = !complete;
+      testHint.textContent = complete
+        ? '全部完成了！现在可以查看你的属灵性格画像。'
+        : '请完整回答所有题目，耐心是圣灵的果子。';
+    }
+
+    function sumToLevel(score) {
+      if (score <= 3) return 'L';
+      if (score === 4) return 'M';
+      return 'H';
+    }
+
+    function levelNum(level) {
+      return { L: 1, M: 2, H: 3 }[level];
+    }
+
+    function parsePattern(pattern) {
+      return pattern.replace(/-/g, '').split('');
+    }
+
+    function computeResult() {
+      const rawScores = {};
+      const levels = {};
+      Object.keys(dimensionMeta).forEach(dim => { rawScores[dim] = 0; });
+
+      questions.forEach(q => {
+        rawScores[q.dim] += Number(app.answers[q.id] || 0);
+      });
+
+      Object.entries(rawScores).forEach(([dim, score]) => {
+        levels[dim] = sumToLevel(score);
+      });
+
+      const userVector = dimensionOrder.map(dim => levelNum(levels[dim]));
+      const ranked = NORMAL_TYPES.map(type => {
+        const vector = parsePattern(type.pattern).map(levelNum);
+        let distance = 0;
+        let exact = 0;
+        for (let i = 0; i < vector.length; i++) {
+          const diff = Math.abs(userVector[i] - vector[i]);
+          distance += diff;
+          if (diff === 0) exact += 1;
+        }
+        const similarity = Math.max(0, Math.round((1 - distance / 30) * 100));
+        return { ...type, ...TYPE_LIBRARY[type.code], distance, exact, similarity };
+      }).sort((a, b) => {
+        if (a.distance !== b.distance) return a.distance - b.distance;
+        if (b.exact !== a.exact) return b.exact - a.exact;
+        return b.similarity - a.similarity;
+      });
+
+      const bestNormal = ranked[0];
+      let finalType = bestNormal;
+      let modeKicker = '你的属灵性格';
+      let badge = `匹配度 ${bestNormal.similarity}% · 精准命中 ${bestNormal.exact}/15 维`;
+      let sub = '';
+
+      if (bestNormal.similarity >= 80) {
+        sub = '与这位圣经人物的属灵特质高度吻合，这是你在基督里的性格画像。';
+      } else if (bestNormal.similarity >= 60) {
+        sub = '你在某些维度上与这位圣经人物相似，属灵性格有共通之处。';
+      } else {
+        sub = '匹配度偏低，你的属灵性格是独特的组合，圣经人物只是参考。';
+      }
+
+      return { rawScores, levels, ranked, bestNormal, finalType, modeKicker, badge, sub };
+    }
+
+    function renderDimList(result) {
+      const dimList = document.getElementById('dimList');
+      dimList.innerHTML = dimensionOrder.map(dim => {
+        const level = result.levels[dim];
+        const explanation = DIM_EXPLANATIONS[dim][level];
+        return `
+          <div class="dim-item">
+            <div class="dim-item-top">
+              <div class="dim-item-name">${dimensionMeta[dim].name}</div>
+              <div class="dim-item-score">${level} / ${result.rawScores[dim]}分</div>
+            </div>
+            <p>${explanation}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderResult() {
+      const result = computeResult();
+      const type = result.finalType;
+
+      document.getElementById('resultModeKicker').textContent = result.modeKicker;
+      document.getElementById('resultTypeName').textContent = `${type.code}（${type.cn}）`;
+      document.getElementById('matchBadge').textContent = result.badge;
+      document.getElementById('resultTypeSub').textContent = result.sub;
+      document.getElementById('resultDesc').textContent = type.desc;
+      document.getElementById('posterEmoji').textContent = type.emoji;
+      document.getElementById('posterVerse').textContent = type.verse;
+
+      renderDimList(result);
+      showScreen('result');
+    }
+
+    function startTest() {
+      app.answers = {};
+      app.shuffledQuestions = shuffle(questions);
+      renderQuestions();
+      showScreen('test');
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startTest);
+    document.getElementById('backIntroBtn').addEventListener('click', () => showScreen('intro'));
+    document.getElementById('submitBtn').addEventListener('click', renderResult);
+    document.getElementById('restartBtn').addEventListener('click', startTest);
+    document.getElementById('toTopBtn').addEventListener('click', () => showScreen('intro'));
+  </script>
+
+</body>
+</html>
